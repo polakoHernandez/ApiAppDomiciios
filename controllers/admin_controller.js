@@ -28,7 +28,7 @@ export const obtenerAdmin = async (req, res) => {
   try {
     const respuesta = await connection.query(
       `select *from Persona 
-            inner join Usuarios on persona.documento = Ususarios.documento
+            inner join Usuarios on Persona.documento = Ususarios.documento
             where Persona.documento = ?
         `,
       [documento]
