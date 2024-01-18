@@ -21,3 +21,25 @@ export const listarAdmins = async (req, res) => {
     connection.release();
   }
 };
+
+export const obtenerAdmin = async (req, res) => {
+  const { documento } = req.params;
+  const connection = await connectDb.getConnection();
+  try {
+    const respuesta = await connection.query(
+      `select *from Persona 
+            inner join Usuarios on persona.documento = Ususarios.documento
+            where Persona.documento = ?
+        `,
+      [documento]
+    );
+
+    res.status(200).json({ admin: respuesta });
+    await connection.commit();
+  } catch (error) {
+    console.error("Error en la consulta:", error);
+    res.status(500).json({ error: error.message });
+  } finally {
+    connection.release();
+  }
+};
