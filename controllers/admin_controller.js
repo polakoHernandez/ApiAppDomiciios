@@ -34,7 +34,12 @@ export const obtenerAdmin = async (req, res) => {
       [documento]
     );
 
-    res.status(200).json({ admin: respuesta });
+    if (respuesta[0].length === 0) {
+      res.status(404).json({ respuesta: "Usuario no encontrado" });
+    } else if (respuesta[0].length !== 0) {
+      res.status(200).json({ admin: respuesta });
+    }
+
     await connection.commit();
   } catch (error) {
     console.error("Error en la consulta:", error);
