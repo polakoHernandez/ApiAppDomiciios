@@ -25,6 +25,13 @@ export const listarAdmins = async (req, res) => {
 export const obtenerAdmin = async (req, res) => {
   const { documento } = req.params;
   const connection = await connectDb.getConnection();
+
+  if (documento === "") {
+    return res
+      .status(400)
+      .json({ mensaje: "El campo documento es obligatorio" });
+  }
+
   try {
     const respuesta = await connection.query(
       `select *from Persona 
