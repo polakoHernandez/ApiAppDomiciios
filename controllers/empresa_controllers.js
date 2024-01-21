@@ -1,12 +1,12 @@
 import { connectDb } from "../db.js";
 
-export const listarAdmins = async (req, res) => {
+export const listarEmpresas = async (req, res) => {
   const connection = await connectDb.getConnection();
   try {
-    const respuesta = await connection.query("select * from Persona");
+    const respuesta = await connection.query("select * from Empresas");
 
     if (respuesta) {
-      res.status(200).json({ listaExamenes: respuesta[0] });
+      res.status(200).json({ listarEmpresas: respuesta[0] });
     } else {
       res.status(404).json({ mensaje: "No se encontraron resultados" });
     }
