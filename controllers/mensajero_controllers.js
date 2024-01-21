@@ -23,8 +23,16 @@ export const listarAdmins = async (req, res) => {
 };
 
 export const obtenerMensajero = async (req, res) => {
-  const { documento } = req.params;
+  const { documento, password } = req.params;
   const connection = await connectDb.getConnection();
+
+  if (documento === "") {
+    res.status(400).json({ respuesta: "El documento es obligatorio" });
+    return;
+  } else if (password === "") {
+    res.status(400).json({ respuesta: "La contraseña es obligatoria" });
+    return;
+  }
 
   try {
     const respuesta = await connection.query(
@@ -37,9 +45,21 @@ export const obtenerMensajero = async (req, res) => {
     );
 
     if (respuesta[0].length === 0) {
-      res.status(404).json({ respuesta: "Usuario no encontrado" });
+      res.status(404).json({ respuesta: "Mensajero no encontrado" });
     } else if (respuesta[0].length !== 0) {
-      res.status(200).json({ mensajero: respuesta[0][0] });
+      const mensajero = respuesta[0][0];
+
+      if (
+        documento === mensajero.documento &&
+        password === mensajero.contrasena
+      ) {
+        res.status(200).json({ mensajero: respuesta[0][0] });
+      } else if (
+        documento !== mensajero.documento ||
+        password !== mensajero.contrasena
+      ) {
+        res.status(401).json({ respuesta: "Credenciales Incorrectas" });
+      }
     }
 
     await connection.commit();
