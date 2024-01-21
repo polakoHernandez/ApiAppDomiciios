@@ -3,7 +3,7 @@ import { connectDb } from "../db.js";
 export const listarEmpresas = async (req, res) => {
   const connection = await connectDb.getConnection();
   try {
-    const respuesta = await connection.query("select * from Empresas");
+    const respuesta = await connection.query("select * from Empresa");
 
     if (respuesta) {
       res.status(200).json({ listarEmpresas: respuesta[0] });
