@@ -23,7 +23,7 @@ export const listarAdmins = async (req, res) => {
 };
 
 export const obtenerMensajero = async (req, res) => {
-  const { documento, password } = req.params;
+  const { documento, password } = req.body;
   const connection = await connectDb.getConnection();
 
   if (documento === "") {
